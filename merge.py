@@ -43,7 +43,13 @@ if uploaded_file is not None:
         tmpfile = NamedTemporaryFile(delete=False, suffix='.xlsx')
         with xlsxwriter.Workbook(tmpfile.name) as book:
             ws = book.add_worksheet('Merge2_filtered')
-            for i, (index, row) in enumerate(merge2_filtered.iterrows()):
+            
+            # Write column headers to the first row
+            for j, col_name in enumerate(merge2_filtered.columns):
+                ws.write(0, j, col_name)
+            
+            # Write data starting from the second row
+            for i, (index, row) in enumerate(merge2_filtered.iterrows(), start=1):
                 for j, col_val in enumerate(row):
                     ws.write(i, j, col_val)
         
